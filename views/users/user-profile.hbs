@@ -16,9 +16,11 @@
 {{#if userInSession}}
   <h2>Welcome, {{ userInSession.username }}!</h2>
   <p>This is your profile page my friend!</p>
+  <img src="{{userInSession.imgUrl}}" alt="User Avatar">
   <button>
     <a href="/userProfile">Reload the page</a>
   </button>
 {{else}}
   <p>Still no logged in user, sorry!</p>
 {{/if}}
+<button><a href="/">Back</a></button>
