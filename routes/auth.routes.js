@@ -7,6 +7,8 @@ const mongoose = require("mongoose"); // <== has to be added
 const bcryptjs = require("bcryptjs");
 const saltRounds = 10;
 
+const {checkAnon, checkLogin} =require("../middle/auth.middleware")
+
 const User = require("../models/User.model");
 
 // GET route ==> to display the signup form to users
@@ -73,7 +75,7 @@ router.post("/signup", (req, res, next) => {
 router.get("/login", (req, res) => res.render("auth/login"));
 
 // POST login route ==> to process form data
-router.post("/login", (req, res, next) => {
+router.post("/login", checkAnon, (req, res, next) => {
   console.log("SESSION =====> ", req.session);
   const { email, password } = req.body;
 
@@ -105,7 +107,7 @@ router.post("/login", (req, res, next) => {
         // res.render('users/user-profile', { user });
 
         //******* SAVE THE USER IN THE SESSION ********//
-        req.session.currentUser = user;
+        req.session.currentUserId = user._id;
         res.redirect("/userProfile");
       } else {
         // if the two passwords DON'T match, render the login form again
@@ -120,7 +122,7 @@ router.get("/userProfile", (req, res) => {
   res.render("users/user-profile", { userInSession: req.session.currentUser });
 });
 
-router.post("/logout", (req, res) => {
+router.post("/logout", checkLogin, (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
