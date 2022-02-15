@@ -1,16 +1,18 @@
 const router = require("express").Router();
-const checkLogin = require("../../middlewares/auth.middleware")
+const {checkLogin} = require("../../middlewares/auth.middleware")
 const fileUploader = require("../../config/cloudinary-config");
 const UserModel = require("../../models/User.model");
+
 
 /* GET home page */
 router.get("/", checkLogin, (req, res, next) => {
   res.render("profile");
 });
 
-router.routes("/edit")
+router.route("/edit")
   .get((req, res, next) => {
-    res.render("edit-profile")
+    
+    res.render("users/edit-profile")
   })
   .post((fileUploader.single("imgUrl")),(req, res, next) => {
     const id = req.session.currentUserId 

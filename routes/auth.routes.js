@@ -7,7 +7,7 @@ const mongoose = require("mongoose"); // <== has to be added
 const bcryptjs = require("bcryptjs");
 const saltRounds = 10;
 
-const {checkAnon, checkLogin} =require("../middle/auth.middleware")
+const {checkAnon, checkLogin} =require("../middlewares/auth.middleware")
 
 const User = require("../models/User.model");
 
@@ -107,7 +107,8 @@ router.post("/login", checkAnon, (req, res, next) => {
         // res.render('users/user-profile', { user });
 
         //******* SAVE THE USER IN THE SESSION ********//
-        req.session.currentUserId = user._id;
+        req.session.currentUserId = user
+        ;
         res.redirect("/userProfile");
       } else {
         // if the two passwords DON'T match, render the login form again
@@ -119,7 +120,7 @@ router.post("/login", checkAnon, (req, res, next) => {
 });
 
 router.get("/userProfile", (req, res) => {
-  res.render("users/user-profile", { userInSession: req.session.currentUser });
+  res.render("users/user-profile", { userInSession: req.session.currentUserId });
 });
 
 router.post("/logout", checkLogin, (req, res) => {

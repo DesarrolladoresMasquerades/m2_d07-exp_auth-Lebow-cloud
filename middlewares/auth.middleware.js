@@ -10,5 +10,5 @@ function checkAnon(req, res, next){
   next()
 }
 
-module.exports = {checkLogin, checAnon}
+module.exports = {checkLogin, checkAnon}
 
